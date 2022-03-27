@@ -2,6 +2,8 @@ package cli
 
 import (
 	"bytes"
+	"crypto/tls"
+	"crypto/x509"
 	"flag"
 	"fmt"
 	"os"
@@ -12,6 +14,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 
 	"github.com/coxley/pmlproxy/pb"
 )
@@ -51,6 +54,7 @@ func Execute() error {
 
 var (
 	addr     string
+	insecure bool
 	errorC   = color.New(color.FgHiRed)
 	warningC = color.New(color.FgYellow)
 )
@@ -58,6 +62,7 @@ var (
 func init() {
 	// TODO: Set this via config, env, or flag. (maybe viper)
 	rootCmd.PersistentFlags().StringVar(&addr, "addr", "", "which proxy server to talk to? (eg: localhost:6969")
+	rootCmd.PersistentFlags().BoolVarP(&insecure, "insecure", "i", false, "disable TLS instead of verifying against system cert pool")
 	rootCmd.SetGlobalNormalizationFunc(normalizeFlags)
 	flag.Set("logtostderr", "true")
 }
@@ -73,7 +78,18 @@ func normalizeFlags(f *pflag.FlagSet, name string) pflag.NormalizedName {
 }
 
 func getClient() (pb.PlantUMLClient, error) {
-	conn, err := grpc.Dial(addr)
+	var conn grpc.ClientConnInterface
+	var err error
+	if !insecure {
+		certPool, err := x509.SystemCertPool()
+		if err != nil {
+			return nil, err
+		}
+		config := &tls.Config{RootCAs: certPool}
+		conn, err = grpc.Dial(addr, grpc.WithTransportCredentials(credentials.NewTLS(config)))
+	} else {
+		conn, err = grpc.Dial(addr, grpc.WithInsecure())
+	}
 	if err != nil {
 		return nil, err
 	}
