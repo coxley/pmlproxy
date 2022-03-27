@@ -73,7 +73,7 @@ func normalizeFlags(f *pflag.FlagSet, name string) pflag.NormalizedName {
 }
 
 func getClient() (pb.PlantUMLClient, error) {
-	conn, err := grpc.Dial(addr, grpc.WithInsecure())
+	conn, err := grpc.Dial(addr)
 	if err != nil {
 		return nil, err
 	}
