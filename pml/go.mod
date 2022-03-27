@@ -2,8 +2,6 @@ module github.com/coxley/pmlproxy/pml
 
 go 1.18
 
-replace github.com/coxley/pmlproxy/cli => ../cli
-
 require github.com/coxley/pmlproxy/cli v0.0.0-20220327022213-f27dcdb6c721
 
 require (
