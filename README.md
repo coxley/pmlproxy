@@ -39,27 +39,27 @@ func main() {
 **Using the CLI**:
 
 ```bash
-$ go get github.com/coxley/pmlproxy/pml
-$ alias pml='pmr --addr localhost:9000'
+go get github.com/coxley/pmlproxy/pml
+alias pml='pmr --addr localhost:9000'
 
 # Starting two servers with a shared cache
-$ pml daemon --addr :8001 --cache-addr localhost:9001 -g localhost:9002
-$ pml daemon --addr :8002 --cache-addr localhost:9002 -g localhost:9001
+pml daemon --addr :8001 --cache-addr localhost:9001 -g localhost:9002
+pml daemon --addr :8002 --cache-addr localhost:9002 -g localhost:9001
 
 # Basic render
-$ pml render diagram.pml > output.png
-$ pml render -f SVG diagram.pml > output.svg
+pml render diagram.pml > output.png
+pml render -f SVG diagram.pml > output.svg
 
 # Decode original text from image
-$ pml extract output.png
+pml extract output.png
 
 # Diagram to short text
-$ cat diagram.pml | pml shorten
+cat diagram.pml | pml shorten
 
 # Misc
 
 # Creates digaram-0.png and diagram-1.png
-$ cat <<EOF | pml render --output-to-disk  # or -o
+cat <<EOF | pml render --output-to-disk  # or -o
 @startuml
 rectangle Foo
 rectangle Bar
