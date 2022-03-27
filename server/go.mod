@@ -1,11 +1,8 @@
-module github.com/coxley/pmlproxy/example
+module github.com/coxley/pmlproxy/server
 
 go 1.17
 
-replace github.com/coxley/pmlproxy/pb => /home/coxley/projects/pmlproxy/pb
-
 require (
-	github.com/coxley/pmlproxy/pb v0.0.0-00010101000000-000000000000
 	github.com/golang/glog v1.0.0
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e
 	github.com/prometheus/client_golang v1.12.1

@@ -2,13 +2,7 @@ module github.com/coxley/pmlproxy/cli
 
 go 1.17
 
-replace github.com/coxley/pmlproxy/server => /home/coxley/projects/pmlproxy/server
-
-replace github.com/coxley/pmlproxy/pb => /home/coxley/projects/pmlproxy/pb
-
 require (
-	github.com/coxley/pmlproxy/pb v0.0.0-00010101000000-000000000000
-	github.com/coxley/pmlproxy/server v0.0.0-00010101000000-000000000000
 	github.com/fatih/color v1.13.0
 	github.com/golang/glog v1.0.0
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da

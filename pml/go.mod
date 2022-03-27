@@ -1,20 +1,10 @@
 module pml
 
-replace github.com/coxley/pmlproxy/cli => /home/coxley/projects/pmlproxy/cli
-
-replace github.com/coxley/pmlproxy/pb => /home/coxley/projects/pmlproxy/pb
-
-replace github.com/coxley/pmlproxy/server => /home/coxley/projects/pmlproxy/server
-
 go 1.18
-
-require github.com/coxley/pmlproxy/cli v0.0.0-00010101000000-000000000000
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
-	github.com/coxley/pmlproxy/pb v0.0.0-00010101000000-000000000000 // indirect
-	github.com/coxley/pmlproxy/server v0.0.0-00010101000000-000000000000 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/golang/glog v1.0.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
