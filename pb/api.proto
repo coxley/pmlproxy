@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+option go_package = "github.com/coxley/pmlproxy/pb";
+
+package pb;
+
+service PlantUML {
+  // Render diagram into an image
+  rpc Render(RenderRequest) returns (RenderResponse) {}
+
+  // Shorten diagram source or expand encoded text.
+  //
+  // Implemented server-side to avoid penalty of proxying to plantuml
+  rpc Shorten(ShortenRequest) returns (ShortenResponse) {}
+  rpc Expand(ExpandRequest) returns (ExpandResponse) {}
+
+  // Extract the diagram source from a rendered image
+  //
+  // Works for both PNG and SVG. Format is auto-detected.
+  //
+  // NOTE: Whitespace isn't guaranteed to be stable so the encoded result
+  // before -> after may differ.
+  rpc Extract(ExtractRequest) returns (ExtractResponse) {}
+}
+
+// Pre-rendered version of a PlantUML diagram
+message Diagram {
+  string source = 1;
+  // Shortened string of the diagram.
+  //   - Useful for URLs
+  //   - Spec: http://plantuml.com/text-encoding
+  string encoded = 2;
+}
+
+enum Format {
+  UNSPECIFIED = 0;
+
+  // SVG and PNG are best supported by the PlantUML engine -- and the primary
+  // use-case we're targeting.
+  SVG = 1;
+  PNG = 2;
+}
+
+message RenderRequest {
+  Diagram diagram = 1;
+  Format format = 2;
+}
+
+message RenderResponse {
+  // Diagrams using "newpage" return multiple images from one render.
+  repeated bytes data = 1;
+}
+
+message ShortenRequest {
+  string source = 1;
+}
+
+message ShortenResponse {
+  string encoded = 1;
+}
+
+message ExpandRequest {
+  string encoded = 1;
+}
+
+message ExpandResponse {
+  string source = 1;
+}
+
+message ExtractRequest {
+  // Image data
+  bytes data = 1;
+  // Extract the original diagram... or with all macros fully expanded?
+  bool expandMacros = 2;
+}
+
+message ExtractResponse {
+  Diagram diagram = 1;
+}
