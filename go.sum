@@ -57,10 +57,6 @@ github.com/cncf/udpa/go v0.0.0-20210930031921-04548b0d99d4/go.mod h1:6pvJx4me5XP
 github.com/cncf/xds/go v0.0.0-20210805033703-aa0b78936158/go.mod h1:eXthEFrGJvWHgFFCl3hGmgk+/aYT6PnTQLykKQRLhEs=
 github.com/cncf/xds/go v0.0.0-20210922020428-25de7278fc84/go.mod h1:eXthEFrGJvWHgFFCl3hGmgk+/aYT6PnTQLykKQRLhEs=
 github.com/cncf/xds/go v0.0.0-20211011173535-cb28da3451f1/go.mod h1:eXthEFrGJvWHgFFCl3hGmgk+/aYT6PnTQLykKQRLhEs=
-github.com/coxley/pmlproxy/pb v0.0.0-20220327064112-ffea8eb3f646 h1:1vq5AKrsOO9VtJFMVEchM7IN0FvnlZWDhS49uv2ts0I=
-github.com/coxley/pmlproxy/pb v0.0.0-20220327064112-ffea8eb3f646/go.mod h1:KdwVZ3lIkQ/hVgpn9VcsD2nzisPCOUi6HDADfEwBMQY=
-github.com/coxley/pmlproxy/server v0.0.0-20220327064112-ffea8eb3f646 h1:NrmCyl9oDx8m6kfEPPPkjm8yvWz+uherv4ObK6o4bEg=
-github.com/coxley/pmlproxy/server v0.0.0-20220327064112-ffea8eb3f646/go.mod h1:fvYoOuUN+xuZrUWlnPcnGiNL8BaF0ZjjFARHIhxt19c=
 github.com/cpuguy83/go-md2man/v2 v2.0.1/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
