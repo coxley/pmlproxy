@@ -18,14 +18,14 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PlantUMLClient interface {
-	// Render diagram into an image
+	// Render diagram an image
 	Render(ctx context.Context, in *RenderRequest, opts ...grpc.CallOption) (*RenderResponse, error)
-	// Shorten diagram source or expand encoded text.
+	// Shorten diagram text or expand shortened text.
 	//
 	// Implemented server-side to avoid penalty of proxying to plantuml
 	Shorten(ctx context.Context, in *ShortenRequest, opts ...grpc.CallOption) (*ShortenResponse, error)
 	Expand(ctx context.Context, in *ExpandRequest, opts ...grpc.CallOption) (*ExpandResponse, error)
-	// Extract the diagram source from a rendered image
+	// Extract the diagram text from a rendered image
 	//
 	// Works for both PNG and SVG. Format is auto-detected.
 	//
@@ -82,14 +82,14 @@ func (c *plantUMLClient) Extract(ctx context.Context, in *ExtractRequest, opts .
 // All implementations must embed UnimplementedPlantUMLServer
 // for forward compatibility
 type PlantUMLServer interface {
-	// Render diagram into an image
+	// Render diagram an image
 	Render(context.Context, *RenderRequest) (*RenderResponse, error)
-	// Shorten diagram source or expand encoded text.
+	// Shorten diagram text or expand shortened text.
 	//
 	// Implemented server-side to avoid penalty of proxying to plantuml
 	Shorten(context.Context, *ShortenRequest) (*ShortenResponse, error)
 	Expand(context.Context, *ExpandRequest) (*ExpandResponse, error)
-	// Extract the diagram source from a rendered image
+	// Extract the diagram text from a rendered image
 	//
 	// Works for both PNG and SVG. Format is auto-detected.
 	//

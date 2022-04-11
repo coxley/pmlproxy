@@ -5,16 +5,16 @@ option go_package = "github.com/coxley/pmlproxy/pb";
 package pb;
 
 service PlantUML {
-  // Render diagram into an image
+  // Render diagram an image
   rpc Render(RenderRequest) returns (RenderResponse) {}
 
-  // Shorten diagram source or expand encoded text.
+  // Shorten diagram text or expand shortened text.
   //
   // Implemented server-side to avoid penalty of proxying to plantuml
   rpc Shorten(ShortenRequest) returns (ShortenResponse) {}
   rpc Expand(ExpandRequest) returns (ExpandResponse) {}
 
-  // Extract the diagram source from a rendered image
+  // Extract the diagram text from a rendered image
   //
   // Works for both PNG and SVG. Format is auto-detected.
   //
@@ -25,11 +25,11 @@ service PlantUML {
 
 // Pre-rendered version of a PlantUML diagram
 message Diagram {
-  string source = 1;
+  string full = 1;
   // Shortened string of the diagram.
   //   - Useful for URLs
   //   - Spec: http://plantuml.com/text-encoding
-  string encoded = 2;
+  string short = 2;
 }
 
 enum Format {
@@ -52,19 +52,19 @@ message RenderResponse {
 }
 
 message ShortenRequest {
-  string source = 1;
+  string value = 1;
 }
 
 message ShortenResponse {
-  string encoded = 1;
+  string short = 1;
 }
 
 message ExpandRequest {
-  string encoded = 1;
+  string value = 1;
 }
 
 message ExpandResponse {
-  string source = 1;
+  string full = 1;
 }
 
 message ExtractRequest {

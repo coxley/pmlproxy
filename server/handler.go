@@ -108,9 +108,9 @@ func (h *handler) makeRenderCache() *groupcache.Group {
 				return fmt.Errorf("cache key has wrong format: %v", id)
 			}
 
-			fstr, encoded := s[0], s[1]
+			fstr, short := s[0], s[1]
 			resp, err := h.directRender(ctx, &pb.RenderRequest{
-				Diagram: &pb.Diagram{Encoded: encoded},
+				Diagram: &pb.Diagram{Short: short},
 				Format:  pb.Format(pb.Format_value[fstr]),
 			})
 			if err != nil {
@@ -173,16 +173,16 @@ func (h *handler) Render(ctx context.Context, req *pb.RenderRequest) (*pb.Render
 		return h.directRender(ctx, req)
 	}
 
-	enc := req.Diagram.Encoded
-	if enc == "" && req.Diagram.Source == "" {
+	enc := req.Diagram.Short
+	if enc == "" && req.Diagram.Full == "" {
 		return nil, status.Error(
 			codes.InvalidArgument,
-			"diagram source or encoded values must be set",
+			"full or short diagram must be set",
 		)
 	}
 
 	if enc == "" {
-		e, err := ToShort(req.Diagram.Source)
+		e, err := ToShort(req.Diagram.Full)
 		if err != nil {
 			return nil, err
 		}
@@ -206,16 +206,16 @@ func (h *handler) directRender(ctx context.Context, req *pb.RenderRequest) (*pb.
 		return nil, status.Error(codes.InvalidArgument, "must give a valid Format")
 	}
 
-	if req.Diagram.Encoded == "" && req.Diagram.Source == "" {
+	if req.Diagram.Short == "" && req.Diagram.Full == "" {
 		return nil, status.Error(
 			codes.InvalidArgument,
-			"diagram source or encoded values must be set",
+			"full or short diagram must be set",
 		)
 	}
 
-	text := req.Diagram.Source
-	if req.Diagram.Encoded != "" && text == "" {
-		t, err := FromShort(req.Diagram.Encoded)
+	text := req.Diagram.Full
+	if req.Diagram.Short != "" && text == "" {
+		t, err := FromShort(req.Diagram.Short)
 		if err != nil {
 			return nil, status.Error(
 				codes.InvalidArgument,
@@ -229,13 +229,13 @@ func (h *handler) directRender(ctx context.Context, req *pb.RenderRequest) (*pb.
 }
 
 func (h *handler) Shorten(ctx context.Context, req *pb.ShortenRequest) (*pb.ShortenResponse, error) {
-	enc, err := ToShort(req.Source)
-	return &pb.ShortenResponse{Encoded: enc}, err
+	enc, err := ToShort(req.Value)
+	return &pb.ShortenResponse{Short: enc}, err
 }
 
 func (h *handler) Expand(ctx context.Context, req *pb.ExpandRequest) (*pb.ExpandResponse, error) {
-	source, err := FromShort(req.Encoded)
-	return &pb.ExpandResponse{Source: source}, err
+	full, err := FromShort(req.Value)
+	return &pb.ExpandResponse{Full: full}, err
 }
 
 func (h *handler) Extract(ctx context.Context, req *pb.ExtractRequest) (*pb.ExtractResponse, error) {
@@ -259,5 +259,5 @@ func (h *handler) Extract(ctx context.Context, req *pb.ExtractRequest) (*pb.Extr
 		return nil, err
 	}
 
-	return &pb.ExtractResponse{Diagram: &pb.Diagram{Source: text, Encoded: short}}, nil
+	return &pb.ExtractResponse{Diagram: &pb.Diagram{Full: text, Short: short}}, nil
 }

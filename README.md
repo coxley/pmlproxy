@@ -40,7 +40,7 @@ func main() {
 
 ```bash
 go get github.com/coxley/pmlproxy/pml
-alias pml='pmr --addr localhost:9000'
+alias pml='pml --addr localhost:9000'
 
 # Starting two servers with a shared cache
 pml daemon --addr :8001 --cache-addr localhost:9001 -g localhost:9002

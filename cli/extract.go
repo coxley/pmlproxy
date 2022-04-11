@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var extractEncoded bool
+var extractShort bool
 
 func init() {
 	cmd := cobra.Command{
@@ -20,7 +20,7 @@ func init() {
 		Short: "extract original diagram text from image",
 		Long:  "PlantUML embeds images with the original text — either SVG comment or PNG metadata",
 	}
-	cmd.Flags().BoolVarP(&extractEncoded, "encoded", "e", false, "display short code instead of full text")
+	cmd.Flags().BoolVarP(&extractShort, "short", "s", false, "display shorter, compressed diagram instead of full text")
 	rootCmd.AddCommand(&cmd)
 }
 
@@ -53,9 +53,9 @@ func extractRun(cmd *cobra.Command, args []string) {
 		fatalf("failed to extract: %v", err)
 	}
 
-	if extractEncoded {
-		fmt.Print(resp.Diagram.Encoded)
+	if extractShort {
+		fmt.Print(resp.Diagram.Full)
 	} else {
-		fmt.Print(resp.Diagram.Source)
+		fmt.Print(resp.Diagram.Short)
 	}
 }

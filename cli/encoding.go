@@ -15,14 +15,7 @@ func init() {
 		Use:   "shorten [file]",
 		Args:  cobra.MaximumNArgs(1),
 		Run:   shortenRun,
-		Short: "encode diagram text into a shorter, portable string",
-		Long:  "read from stdin if no file is provided",
-	})
-	rootCmd.AddCommand(&cobra.Command{
-		Use:   "edit [file]",
-		Args:  cobra.MaximumNArgs(1),
-		Run:   editRun,
-		Short: "Print a URL to edit the diagram interactively",
+		Short: "encode full diagram into a shorter, portable string",
 		Long:  "read from stdin if no file is provided",
 	})
 	rootCmd.AddCommand(&cobra.Command{
@@ -34,10 +27,7 @@ func init() {
 	})
 }
 
-// encodePrint has the logic shared between the logic for shorten and edit.
-// They both need to get a file or stdin and encoded it.
-// Pass in the transform function to make it do the custom logic for the two commands.
-func encodedPrint(args []string, transform func(string) string) {
+func shortenRun(cmd *cobra.Command, args []string) {
 	var content []byte
 	var err error
 	if len(args) == 1 {
@@ -59,29 +49,14 @@ func encodedPrint(args []string, transform func(string) string) {
 		fatalf("unable to connect to server: %v", err)
 	}
 
-	resp, err := client.Shorten(context.Background(), &pb.ShortenRequest{Source: text})
+	resp, err := client.Shorten(context.Background(), &pb.ShortenRequest{Value: text})
 	if err != nil {
 		fatalf("failed to shorten: %v", err)
 	}
-	fmt.Print(transform(resp.Encoded))
-}
-
-func shortenRun(cmd *cobra.Command, args []string) {
-	// transform is a no-op; it Just passes the value through.
-	encodedPrint(args, func(s string) string { return s })
-}
-
-// editRunTransform takes the encoded diagram and outputs an editor link
-func editRunTransform(encoded string) string {
-	return "this command isn't implemented just yet — come back later"
-}
-
-func editRun(cmd *cobra.Command, args []string) {
-	encodedPrint(args, editRunTransform)
+	fmt.Print(resp.Short)
 }
 
 func expandRun(cmd *cobra.Command, args []string) {
-	// TODO: When the editor is launched, support having editor links pasted
 	var shortcode string
 	if len(args) == 1 {
 		shortcode = args[0]
@@ -98,9 +73,9 @@ func expandRun(cmd *cobra.Command, args []string) {
 		fatalf("unable to connect to server: %v", err)
 	}
 
-	resp, err := client.Expand(context.Background(), &pb.ExpandRequest{Encoded: shortcode})
+	resp, err := client.Expand(context.Background(), &pb.ExpandRequest{Value: shortcode})
 	if err != nil {
 		fatalf("failed to expand: %v", err)
 	}
-	fmt.Print(resp.Source)
+	fmt.Print(resp.Full)
 }

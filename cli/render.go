@@ -33,7 +33,7 @@ Diagram MUST be wrapped with @startXXX and @endXXX (@startuml, @startditaa, @sta
 One "diagram" can contain multiple definitions back-to-back. You can dump the images
 as different files or stdout with a custom separator.
 
-Stdin can either be the source text or shortcode.
+Stdin can either be the full or compressed diagram.
 `,
 		Example: `
 pml render diagram.puml
@@ -85,10 +85,10 @@ func renderRun(cmd *cobra.Command, args []string) {
 	if len(args) == 1 {
 		content, err := fileContents(args[0])
 		if err == nil {
-			diagram.Source = content
+			diagram.Full = content
 		} else if err == ErrFileNoExist {
 			// Assume shortcode
-			diagram.Encoded = args[0]
+			diagram.Short = args[0]
 		} else {
 			fatalf("unable to read %s: %v", args[0], err)
 		}
@@ -99,9 +99,9 @@ func renderRun(cmd *cobra.Command, args []string) {
 		}
 		content := string(b)
 		if strings.Contains(content, "@start") && strings.Contains(content, "@end") {
-			diagram.Source = content
+			diagram.Full = content
 		} else {
-			diagram.Encoded = content
+			diagram.Short = content
 		}
 	}
 
